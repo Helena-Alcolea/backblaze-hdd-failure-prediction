@@ -1,0 +1,9 @@
+{
+  "model": "lightgbm_v1",
+  "threshold": 0.8339918366625617,
+  "first_day": "2025-07-01",
+  "test_start": "2026-01-01",
+  "last_list_day": "2026-06-15",
+  "last_day": "2026-06-30",
+  "horizon_days": 15
+}

@@ -1,0 +1,30 @@
+# Settings of the app, read by Streamlit from this folder (next to streamlit_app.py), here and online.
+
+[browser]
+# No usage statistics are sent to Streamlit.
+gatherUsageStats = false
+
+[server]
+headless = true
+# Serve the header photo from static/, next to the app.
+enableStaticServing = true
+
+[client]
+# Viewer toolbar, without the developer options.
+toolbarMode = "viewer"
+
+# The project's palette (coolors.co/2b2d42-8d99ae-edf2f4-ef233c-d90429) on a pastel version of the red of the
+# Backblaze logo: the page in #e8bcbb, red borders (#9b2c35), navy text and accent, and the boxes in a warm white.
+# A single light theme: no dark mode.
+[theme]
+base = "light"
+primaryColor = "#2b2d42"
+backgroundColor = "#e8bcbb"
+secondaryBackgroundColor = "#fbf3f1"
+textColor = "#2b2d42"
+borderColor = "#9b2c35"
+dataframeBorderColor = "#ecd2d1"
+dataframeHeaderBackgroundColor = "#f6e3e1"
+blueBackgroundColor = "#f8e9de"
+blueTextColor = "#2b2d42"
+headingFontWeights = [700, 650]

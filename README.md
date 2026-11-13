@@ -1,6 +1,6 @@
 # Predicting hard-drive failures with Backblaze Drive Stats
 
-**[Live dashboard](https://backblaze-hdd-failure-prediction.streamlit.app/)**
+💽 **[Live dashboard](https://backblaze-hdd-failure-prediction.streamlit.app/)**
 
 Every day, the technician of a data centre has to decide which hard drives to back up or replace before they
 fail. This project gives that technician a short daily list. A LightGBM model gives every hard drive a daily
@@ -163,7 +163,7 @@ The first screenshot shows the list of one day, and the second shows one drive.
 ![The app: one drive's details, why it is on the list and its risk score day by day](output_figures/app_drive.png)
 
 The app lives in [`streamlit_dashboard_github/`](streamlit_dashboard_github/README.md), with its own data and a
-README that explains how to run it and publish it.
+README that explains how to read it and run it on your computer.
 
 ## The notebooks
 
@@ -212,7 +212,7 @@ order. Heavy steps work one day at a time, and we ran them under a 2 GB memory c
   drive model, and the model with and without location.
 - **v3, model comparison:** LightGBM against XGBoost and CatBoost with the same tuning budget and bootstrap
   intervals, logistic regression and drive model plus age as baselines, and results by group of drives.
-- **If time permits:** TabM, a calibrated score, alerting again when a reviewed drive gets worse, and fleet-level
+- **A possible v4:** TabM, a calibrated score, alerting again when a reviewed drive gets worse, and fleet-level
   questions such as how many drives will fail.
 
 ## Credits and licence

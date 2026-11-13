@@ -1,6 +1,0 @@
-# What the app needs, nothing else (no model, no DuckDB), pinned to the project's versions (uv.lock).
-# Streamlit Community Cloud installs this file because it is in the folder of the app's main file.
-streamlit==1.66.1
-pandas==3.1.1
-pyarrow==26.0.1
-altair==6.3.0

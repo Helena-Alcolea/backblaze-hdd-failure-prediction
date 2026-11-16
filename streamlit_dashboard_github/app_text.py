@@ -147,10 +147,10 @@ TEXT = {
                              "en 30 días, cuánto ha cambiado respecto a 7 o 30 días antes.",
         "why_weight": "Peso en la nota",
         "why_weight_tip": "Cuánto pesa cada dato en la nota de este disco, en % del total de todos los datos: en "
-                          "rojo, lo que la sube; en azul, lo que la baja. Sale de SHAP, que reparte la nota del "
+                          "rosa, lo que la sube; en azul, lo que la baja. Sale de SHAP, que reparte la nota del "
                           "modelo entre los datos.",
         "why_value": "Valor",
-        "history_subtitle": "La línea roja discontinua es la raya de aviso ({line}): el disco entra en la lista "
+        "history_subtitle": "La línea rosa discontinua es la raya de aviso ({line}): el disco entra en la lista "
                             "el primer día que su nota de riesgo la cruza. La nota empieza en julio de 2025: los "
                             "datos anteriores sirvieron para entrenar el modelo.",
         "why": "Por qué ha entrado en la lista",
@@ -249,10 +249,10 @@ TEXT = {
                              "7- or 30-day change, how much it changed since 7 or 30 days before.",
         "why_weight": "Weight in the score",
         "why_weight_tip": "How much each fact weighs in this drive's score, as a % of the total over all facts: in "
-                          "red, what raises it; in blue, what lowers it. It comes from SHAP, which splits the "
+                          "pink, what raises it; in blue, what lowers it. It comes from SHAP, which splits the "
                           "model's score among the facts.",
         "why_value": "Value",
-        "history_subtitle": "The red dashed line is the alert line ({line}): a drive enters the list on the first "
+        "history_subtitle": "The pink dashed line is the alert line ({line}): a drive enters the list on the first "
                             "day its risk score crosses it. The score starts in July 2025: earlier data trained "
                             "the model.",
         "why": "Why it is on the list",

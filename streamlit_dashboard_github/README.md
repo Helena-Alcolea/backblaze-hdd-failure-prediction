@@ -15,7 +15,7 @@ You can open it online from the link at the top of the [main README](../README.m
   again.
 - **One drive in detail.** Click a row of the list to see the drive's model, capacity and age, why it entered
   the list and its risk score day by day.
-- **Why it entered the list:** the ten facts that weigh most in its risk score, computed with SHAP. In red, what
+- **Why it entered the list:** the ten facts that weigh most in its risk score, computed with SHAP. In pink, what
   raises it; in blue, what lowers it.
 - **Show what happened next:** a switch that reveals whether the drive really failed afterwards, and when. It is
   what the technician could not know that day.
@@ -37,8 +37,7 @@ pip install -r streamlit_dashboard_github/requirements.txt
 streamlit run streamlit_dashboard_github/streamlit_app.py --server.address localhost
 ```
 
-Then open http://localhost:8501. If you have installed the whole project, as the main README explains, this is
-enough: `uv run streamlit run streamlit_dashboard_github/streamlit_app.py`.
+Then open http://localhost:8501.
 
 ## What is in this folder
 
@@ -57,12 +56,8 @@ enough: `uv run streamlit run streamlit_dashboard_github/streamlit_app.py`.
 
 The tables in `app_data/` are a small extract of the project's results: the first alert of each drive life
 between July 2025 and June 2026, with its SHAP values, and the daily risk score of those drives. The app needs
-nothing else: neither the model nor the Backblaze data. The project's pipeline computes them from the public
-Backblaze Drive Stats data (see the main README), and its last step writes them here:
-
-```bash
-uv run python -m backblaze_hdd_failure_prediction.dashboard
-```
+nothing else: neither the model nor the Backblaze data. They were computed from the public Backblaze Drive Stats
+data with the project's pipeline, as the notebooks explain.
 
 ## Credits
 

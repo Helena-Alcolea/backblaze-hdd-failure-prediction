@@ -17,9 +17,9 @@ What it shows:
 - what happened next (whether and when the drive failed) behind a switch that is off by default;
 - in Spanish and English, with a switch with flags at the top, Spanish by default;
 - a header with a photo of a Backblaze Storage Pod (CC BY 2.0, credited in the footer) behind the title;
-- the project's palette (coolors.co/2b2d42-8d99ae-edf2f4-ef233c-d90429) on a reddish page, after the red of the
-  Backblaze logo: the page in .streamlit/config.toml, the boxes (figures, list and charts) in BOXES and the
-  charts in COLORS.
+- a page in a gradient from pink to light blue (coolors.co/f72585-b5179e-7209b7-560bad-480ca8-3a0ca3-3f37c9-
+  4361ee-4895ef-4cc9f0), with white boxes framed in indigo and navy text: the gradient in GRADIENT, the boxes
+  (figures, list and charts) in BOXES, the charts in COLORS and Streamlit's own widgets in .streamlit/config.toml.
 
 This folder holds everything the app needs and nothing else. The app reads only the compact tables in app_data/
 (the first alerts, the daily risk scores and meta.json, with the alert line and the days of the timeline),
@@ -58,17 +58,21 @@ HEADER_PHOTO = "app/static/storage_pod_banner.jpg"
 # The app has a single, light theme (.streamlit/config.toml). A dark one, chosen from `st.context.theme`, is not
 # reliable: Streamlit infers the theme from the page's background colour and does not know it on the first run
 # of a session, so the boxes would change colour after the first click.
-# Colours of the charts, from the project's palette: red raises the score and a more saturated slate blue
-# lowers it (checked with the data-viz palette validator against the boxes: lightness, chroma,
-# colour-blind separation and contrast), the score line in the palette's navy over a rose area, the alert
-# line in red, the alert day in the palette's grey, the texts in navy (dark text reads better than grey)
-# and a thin light grey grid.
-COLORS = {"up": "#d90429", "down": "#3f67b0", "line": "#2b2d42", "area": "#d9a0a5", "alert_line": "#ef233c",
-          "muted": "#8d99ae", "failure": "#d90429", "ink": "#2b2d42", "grid": "#ddd5d2"}
-# Boxes of the figures, the list, the charts and the footer: a warm white background on the pastel red page,
-# with a red border, a darker shade of the page. The page is in .streamlit/config.toml.
-BOXES = {"background": "#fffaf7", "border": "#9b2c35", "track": "#f1e1df", "tip": "#2b2d42", "tip_ink": "#f5eeee",
-         "on_page": "#2b2d42", "ink": "#2b2d42", "selected": "#f6d3d4"}
+# Page background: a gradient through the palette coolors.co/f72585-b5179e-7209b7-560bad-480ca8-3a0ca3-3f37c9-
+# 4361ee-4895ef-4cc9f0, from pink to light blue. It covers the window and stays still while the page scrolls.
+GRADIENT = ["#f72585", "#b5179e", "#7209b7", "#560bad", "#480ca8", "#3a0ca3", "#3f37c9", "#4361ee", "#4895ef",
+            "#4cc9f0"]
+# Colours of the charts, from the same palette: its two ends for what raises the score (pink) and what lowers
+# it (blue), checked with the data-viz palette validator against the boxes (lightness, chroma, colour-blind
+# separation and contrast); the score line in indigo over a light violet area, the alert line in the same pink
+# (the colour that asks for attention), the failure day in magenta, the alert day in grey, the texts in navy
+# (dark text reads better than a colour) and a thin light grey grid.
+COLORS = {"up": "#f72585", "down": "#4361ee", "line": "#3a0ca3", "area": "#7209b7", "alert_line": "#f72585",
+          "muted": "#8d99ae", "failure": "#b5179e", "ink": "#2b2d42", "grid": "#e2dfea"}
+# Boxes of the figures, the list, the charts and the footer: white with a hint of violet, framed in indigo, with
+# light violet tracks and selected row. The texts and buttons laid straight on the gradient are white.
+BOXES = {"background": "#fdfcff", "border": "#3a0ca3", "track": "#ece7f6", "tip": "#2b2d42", "tip_ink": "#f4f2fa",
+         "on_page": "#ffffff", "ink": "#2b2d42", "selected": "#e6dcf8"}
 
 
 def style() -> str:
@@ -77,6 +81,11 @@ def style() -> str:
     the same ⓘ and the same navy box. Only the help icons change: the buttons of the table's toolbar keep theirs."""
     b = BOXES
     return f"""<style>
+.stApp {{ background: linear-gradient(135deg, {', '.join(GRADIENT)}); }}
+[data-testid="stHeader"] {{ background: transparent; }}
+[data-testid="stHeader"] [data-testid="stToolbar"], [data-testid="stHeader"] [data-testid="stToolbar"] * {{
+  color: {b['on_page']} !important;
+}}
 [data-testid="stMetric"], .st-key-list_box, .st-key-why_box, .st-key-history_box, .st-key-footer_box {{
   background: {b['background']}; border: 2px solid {b['border']} !important; border-radius: 0.8rem;
 }}
@@ -96,14 +105,15 @@ def style() -> str:
 .hero {{
   display: flex; flex-direction: column; justify-content: center; min-height: 15rem; padding: 2.4rem 2.4rem;
   border-radius: 1rem; color: #ffffff;
-  background: linear-gradient(90deg, rgba(18, 10, 14, 0.94) 0%, rgba(18, 10, 14, 0.84) 38%,
-              rgba(18, 10, 14, 0.35) 72%, rgba(94, 11, 18, 0.15) 100%),
+  background: linear-gradient(90deg, rgba(16, 8, 40, 0.94) 0%, rgba(16, 8, 40, 0.84) 38%,
+              rgba(16, 8, 40, 0.35) 72%, rgba(58, 12, 163, 0.18) 100%),
               url("{HEADER_PHOTO}") center 45% / cover no-repeat;
 }}
 .hero h1 {{ color: #ffffff; font-size: 3rem; font-weight: 800; line-height: 1.1; margin: 0 0 0.7rem;
   letter-spacing: -0.02em; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45); max-width: 42rem; padding: 0; }}
-.hero p {{ color: #f5eeee; font-size: 1.1rem; margin: 0; max-width: 38rem; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5); }}
-.hero .accent {{ width: 4rem; height: 0.3rem; background: #ef233c; border-radius: 0.2rem; margin-bottom: 1rem; }}
+.hero p {{ color: #f4f2fa; font-size: 1.1rem; margin: 0; max-width: 38rem; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5); }}
+.hero .accent {{ width: 4rem; height: 0.3rem; background: linear-gradient(90deg, {GRADIENT[0]}, {GRADIENT[-1]});
+  border-radius: 0.2rem; margin-bottom: 1rem; }}
 .st-key-drive_title h3, .st-key-daynav [data-testid="stWidgetLabel"] p,
 .st-key-switch label p, .st-key-daynav [data-testid="stTooltipIcon"], .st-key-switch [data-testid="stTooltipIcon"] {{
   color: {b['on_page']} !important;
@@ -303,7 +313,7 @@ def history_chart(history: pd.DataFrame, alert_day: date, failure_day: date | No
     alert_line = pd.DataFrame({"y": [line], "date": [h["date"].min()],
                                "label": [text(lang, "line_label", line=score(line, lang))]})
     layers = [
-        alt.Chart(h).mark_area(opacity=0.25, color=colors["area"]).encode(x=x, y=y),
+        alt.Chart(h).mark_area(opacity=0.15, color=colors["area"]).encode(x=x, y=y),
         alt.Chart(h).mark_line(strokeWidth=3, color=colors["line"]).encode(x=x, y=y),
         alt.Chart(h).mark_point(size=80, filled=True, color=colors["line"]).encode(
             x=x, y=y, opacity=alt.condition(hover, alt.value(1), alt.value(0)),

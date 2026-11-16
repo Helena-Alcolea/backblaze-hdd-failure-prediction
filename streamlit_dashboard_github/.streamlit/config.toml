@@ -13,18 +13,18 @@ enableStaticServing = true
 # Viewer toolbar, without the developer options.
 toolbarMode = "viewer"
 
-# The project's palette (coolors.co/2b2d42-8d99ae-edf2f4-ef233c-d90429) on a pastel version of the red of the
-# Backblaze logo: the page in #e8bcbb, red borders (#9b2c35), navy text and accent, and the boxes in a warm white.
-# A single light theme: no dark mode.
+# The palette coolors.co/f72585-b5179e-7209b7-560bad-480ca8-3a0ca3-3f37c9-4361ee-4895ef-4cc9f0: the page is a
+# gradient through it (drawn by the app's CSS over this background), with white boxes, indigo borders (#3a0ca3),
+# navy text and light violet shades in the tables. A single light theme: no dark mode.
 [theme]
 base = "light"
-primaryColor = "#2b2d42"
-backgroundColor = "#e8bcbb"
-secondaryBackgroundColor = "#fbf3f1"
+primaryColor = "#3a0ca3"
+backgroundColor = "#fdfcff"
+secondaryBackgroundColor = "#f4f1fb"
 textColor = "#2b2d42"
-borderColor = "#9b2c35"
-dataframeBorderColor = "#ecd2d1"
-dataframeHeaderBackgroundColor = "#f6e3e1"
-blueBackgroundColor = "#f8e9de"
+borderColor = "#3a0ca3"
+dataframeBorderColor = "#e6e0f3"
+dataframeHeaderBackgroundColor = "#efe9fa"
+blueBackgroundColor = "#eef0fd"
 blueTextColor = "#2b2d42"
 headingFontWeights = [700, 650]

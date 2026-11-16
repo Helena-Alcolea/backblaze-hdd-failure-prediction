@@ -86,6 +86,18 @@ the last 7 or 30 days.
 
 The model is LightGBM, trained on every positive drive-day and 0.5 % of the negative ones.
 
+> **Decision**: LightGBM, without a comparison with XGBoost or CatBoost.
+>
+> **Why**: the three are gradient-boosted trees and, once tuned, perform about the same on tabular data (in
+> TabArena, NeurIPS 2025, their intervals overlap), while LightGBM tunes about 1.7 times faster than XGBoost and
+> 4 times faster than CatBoost. On a laptop without a GPU, with some 60 million drive-days to score per period,
+> speed meant more experiments. And the limit here is the signal, not the algorithm: a fifth of the test failures
+> give no warning in the S.M.A.R.T. counters at all.
+>
+> **Discarded**, for now: CatBoost, whose smoothed category statistics suit drive models with few failures. Here
+> the models with fewer than 10 training failures share one category instead; CatBoost is the first to try if
+> the drive model should weigh more.
+
 > **Decision**: the alert line is 0.834, the risk score at which the model detects the same 1,401 failures as the
 > 30-day rule in validation.
 >
@@ -136,9 +148,11 @@ the risk score and blue lowers it.
 The model watches the same counters as the rule of five, above all 197 (pending sectors), but it uses how high
 they are and how fast they change. Age barely weighs.
 
-An alert rarely means that the failure is close. Of the 6,429 first alerts of validation (leaving out 1 July, the
-start-up day), 308 (4.8 %) failed within 15 days and 1,734 (27.0 %) failed later, a median of 117 days after the
-alert. The other 4,189 (65.2 %) were still running in June 2026, and 87.3 % of them spent most of the days after
+An alert does not always mean that the failure is close, but it does mark a drive at much higher risk. Of the
+6,429 first alerts of validation (leaving out 1 July, the start-up day), 308 (4.8 %) failed within 15 days and
+1,734 (27.0 %) failed later, a median of 117 days after the alert: in all, 31.8 % failed within the next 6 to 12
+months, against 1.33 % of the whole fleet in a year (the drives running on 1 July 2025), about 24 times more. The
+other 4,189 (65.2 %) were still running in June 2026, and 87.3 % of them spent most of the days after
 the alert back below the line.
 
 > **Decision**: each drive life enters the list once, on the first day it crosses the line.
@@ -167,7 +181,8 @@ README that explains how to read it and run it on your computer.
 
 ## The notebooks
 
-The four notebooks tell the full story, with every decision and its reason. They are saved with their outputs.
+The four notebooks tell the full story, with every decision and its reason. They are saved with their outputs,
+so they can be read here; the pipeline that computes the data stays outside this repository.
 
 | Notebook | What it covers |
 |---|---|
@@ -176,44 +191,15 @@ The four notebooks tell the full story, with every decision and its reason. They
 | [03 · Baselines and model](notebooks/03_baselines_and_model.ipynb) | Evaluation per drive life, the rule of five, LightGBM, the comparisons and the alert line |
 | [04 · Results](notebooks/04_results.ipynb) | The test period, why detection drops there, what pushes the alerts (SHAP) and the limitations |
 
-## How to reproduce it
-
-You need [uv](https://docs.astral.sh/uv/) and about 40 GB of free disk. `uv sync` installs Python 3.14 and the
-exact library versions of `uv.lock`, and `uv run pytest` runs the tests. The data are not in the repository: the
-first step downloads them from Backblaze.
-
-```text
-.
-├── src/backblaze_hdd_failure_prediction/   the pipeline, one module per step, and the notebooks' code
-├── notebooks/                              the four notebooks
-├── output_figures/                         their figures and the app screenshots
-├── streamlit_dashboard_github/             the app, with its own data
-└── tests/
-```
-
-Each step runs from the project folder as `uv run python -m backblaze_hdd_failure_prediction.<step>`, in this
-order. Heavy steps work one day at a time, and we ran them under a 2 GB memory cap.
-
-| Step | What it writes |
-|---|---|
-| `ingest 2023Q3 2026Q2` | Bronze: the CSV files as Parquet |
-| `drives`, `inventory` | One row per drive, and drives and failures per model and quarter |
-| `clean 2023Q3 2026Q2` | Silver |
-| `exploration coverage`, `signal`, `episodes` | The exploration tables |
-| `gold lookups`, `gold build 2023Q3 2026Q2` | Gold |
-| `evaluation lives <quarter>` (2025Q3 to 2026Q2), `evaluation summary` | The rules, per life |
-| `train sample <quarter>` (2023Q3 to 2025Q4), `train search` | The training sample and the model |
-| `predict <quarter>` (2025Q3 to 2026Q2), `evaluation summary` | The risk scores, and the model against the rules |
-| `explain <quarter>` (2025Q3 to 2026Q2), `dashboard`, `evaluation failures` | SHAP of the first alerts, the app's tables and the failures by signal |
-
 ## Next versions
 
 - **v2, location:** whether failure rates change with where a drive sits (data centre, pod and slot) beyond its
   drive model, and the model with and without location.
-- **v3, model comparison:** LightGBM against XGBoost and CatBoost with the same tuning budget and bootstrap
-  intervals, logistic regression and drive model plus age as baselines, and results by group of drives.
-- **A possible v4:** TabM, a calibrated score, alerting again when a reviewed drive gets worse, and fleet-level
-  questions such as how many drives will fail.
+- **v3, a more useful score:** a calibrated score (a real probability of failing within 15 days), alerting again
+  when a reviewed drive gets worse, where the model fails by group of drives, and bootstrap intervals over drives.
+- **v4, time to failure:** survival analysis to estimate the risk of failing within 15, 30 or 90 days, and
+  fleet-level questions such as how many drives will fail next month, with logistic regression and drive model
+  plus age as baselines.
 
 ## Credits and licence
 

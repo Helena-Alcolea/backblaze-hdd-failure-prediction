@@ -18,7 +18,8 @@ validation and the blue dots are the three versions of the rule of five.
 
 ![On the test period, the model detects as many failures as the 30-day rule with 58 % fewer false alarms](output_figures/04_operating_curve_test.png)
 
-This is version 1 of the project; what comes next is in [Next versions](#next-versions).
+Version 2 added where each drive sits: knowing it does not improve the model, as [Location (v2)](#location-v2)
+explains. What comes next is in [Next versions](#next-versions).
 
 ## The data and the question
 
@@ -163,6 +164,25 @@ the alert back below the line.
 > flagged months before does not come back when it is really about to fail, although the evaluation counts it as
 > detected if its score is above the line in its last 15 days.
 
+## Location (v2)
+
+Backblaze also publishes where each drive sits, from the data centre down to the slot. Version 2 asks whether
+that place changes how often drives fail, and whether the model detects more failures when it knows it. **It does
+not improve the model, so the model stays as it is.**
+
+- Data centres fail as their drive models predict, within about ±10 %, once the mix of drive models in each one
+  is accounted for.
+- Some vaults (groups of about 1,200 drives) do fail far more than chance allows, and the same ones in both
+  training years. But in each of them the excess comes from one drive model, which fails normally in the other
+  vaults, even at the same age: most likely bad manufacturing batches, not the place.
+- Trained again with the vault as one more variable, the model detects practically the same failures in
+  validation and in test. It already detected more than 80 % of the failures of those batches through their
+  S.M.A.R.T. attributes.
+
+Backblaze's data centres are similar, climate-controlled rooms, so location could matter in places with real
+differences of heat or vibration; pods and slots have too few failures each to be studied.
+[Notebook 05](notebooks/05_location.ipynb) has the full analysis.
+
 ## The app
 
 For a day between 1 July 2025 and 15 June 2026, as if it were today, the app lists the drives that cross the alert
@@ -181,7 +201,7 @@ README that explains how to read it and run it on your computer.
 
 ## The notebooks
 
-The four notebooks tell the full story, with every decision and its reason. They are saved with their outputs,
+The five notebooks tell the full story, with every decision and its reason. They are saved with their outputs,
 so they can be read here; the pipeline that computes the data stays outside this repository.
 
 | Notebook | What it covers |
@@ -190,11 +210,10 @@ so they can be read here; the pipeline that computes the data stays outside this
 | [02 · Exploration and gold layer](notebooks/02_exploration_and_gold_layer.ipynb) | Which attributes each manufacturer reports, why H = 15, the MG08 episode, the label and the variables |
 | [03 · Baselines and model](notebooks/03_baselines_and_model.ipynb) | Evaluation per drive life, the rule of five, LightGBM, the comparisons and the alert line |
 | [04 · Results](notebooks/04_results.ipynb) | The test period, why detection drops there, what pushes the alerts (SHAP) and the limitations |
+| [05 · Location](notebooks/05_location.ipynb) | v2: data centres and vaults against what their drive models predict, a check for shortcuts, bad batches, and the model with and without the vault |
 
 ## Next versions
 
-- **v2, location:** whether failure rates change with where a drive sits (data centre, pod and slot) beyond its
-  drive model, and the model with and without location.
 - **v3, a more useful score:** a calibrated score (a real probability of failing within 15 days), alerting again
   when a reviewed drive gets worse, where the model fails by group of drives, and bootstrap intervals over drives.
 - **v4, time to failure:** survival analysis to estimate the risk of failing within 15, 30 or 90 days, and
